@@ -13,12 +13,47 @@ import {
 
 export default function DashboardPage() {
   return (
-    <main className="flex min-h-screen bg-slate-950 text-white">
-      <Sidebar />
+    
+    <main className="relative flex min-h-screen overflow-hidden bg-slate-950 text-white">
+{/* Background Glow */}
+<div className="absolute -left-40 top-0 h-96 w-96 rounded-full bg-cyan-500/20 blur-[140px]" />
 
-      <div className="flex-1">
-        <Topbar />
+<div className="absolute right-0 top-60 h-96 w-96 rounded-full bg-indigo-500/20 blur-[140px]" />
 
+<div className="absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-purple-500/20 blur-[120px]" />
+    
+
+      
+      <div className="relative z-10 flex w-full">
+
+  <Sidebar />
+
+  <div className="flex-1">
+    <Topbar />
+<div className="mx-8 mt-8 rounded-3xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/10 via-slate-900/60 to-indigo-500/10 p-10 backdrop-blur-xl">
+
+  <h1 className="text-5xl font-extrabold">
+    👋 Welcome Back
+  </h1>
+
+  <p className="mt-4 max-w-2xl text-lg text-slate-300">
+    Your AI-powered college assistant is ready to help you with academics,
+    complaints, campus updates and much more.
+  </p>
+
+  <div className="mt-8 flex gap-4">
+
+    <button className="rounded-xl bg-cyan-500 px-6 py-3 font-semibold transition hover:bg-cyan-400">
+      🤖 Open AI Chat
+    </button>
+
+    <button className="rounded-xl border border-slate-700 bg-slate-900/60 px-6 py-3 font-semibold hover:border-cyan-400">
+      📰 Campus Feed
+    </button>
+
+  </div>
+
+</div>
         <div className="p-8">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <DashboardCard
@@ -62,9 +97,10 @@ export default function DashboardPage() {
               icon={<User size={40} />}
               href="/profile"
             />
-          </div>
-        </div>
-      </div>
+           </div>
+         </div>
+       </div>
+     </div>
     </main>
   );
 }
