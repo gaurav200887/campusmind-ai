@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+
+import Sidebar from "@/components/layout/Sidebar";
+import Topbar from "@/components/layout/Topbar";
+
 import ChatHeader from "@/components/chat/ChatHeader";
 import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
@@ -39,12 +43,13 @@ export default function AIChatPage() {
 
       const data = await response.json();
 
-      const aiMessage: Message = {
-        text: data.reply,
-        sender: "ai",
-      };
-
-      setMessages((prev) => [...prev, aiMessage]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: data.reply,
+          sender: "ai",
+        },
+      ]);
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -57,10 +62,29 @@ export default function AIChatPage() {
   };
 
   return (
-    <main className="flex h-screen flex-col bg-slate-950 text-white">
-      <ChatHeader />
-      <ChatMessages messages={messages} />
-      <ChatInput onSend={sendMessage} />
+    <main className="relative flex min-h-screen overflow-hidden bg-slate-950 text-white">
+
+      {/* Background Glow */}
+      <div className="absolute -left-40 top-0 h-96 w-96 rounded-full bg-cyan-500/20 blur-[140px]" />
+      <div className="absolute right-0 top-60 h-96 w-96 rounded-full bg-indigo-500/20 blur-[140px]" />
+
+      <div className="relative z-10 flex w-full">
+
+        <Sidebar />
+
+        <div className="flex flex-1 flex-col">
+
+          <Topbar />
+
+          <ChatHeader />
+
+          <ChatMessages messages={messages} />
+
+          <ChatInput onSend={sendMessage} />
+
+        </div>
+
+      </div>
     </main>
   );
 }

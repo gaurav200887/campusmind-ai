@@ -1,12 +1,45 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export default function LoginPage() {
-  return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-950">
+  const router = useRouter();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setError("Please enter email and password.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-slate-950">
       <div className="w-full max-w-md rounded-2xl bg-slate-900 p-8 shadow-xl">
 
-        <h1 className="text-3xl font-bold text-center text-cyan-400">
+        <h1 className="text-center text-3xl font-bold text-cyan-400">
           CampusMind AI
         </h1>
 
@@ -17,23 +50,44 @@ export default function LoginPage() {
         <input
           type="email"
           placeholder="College Email"
-          className="mt-8 w-full rounded-lg border border-slate-700 bg-slate-800 p-3 text-white"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="mt-8 w-full rounded-lg border border-slate-700 bg-slate-800 p-3 text-white outline-none"
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="mt-4 w-full rounded-lg border border-slate-700 bg-slate-800 p-3 text-white"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="mt-4 w-full rounded-lg border border-slate-700 bg-slate-800 p-3 text-white outline-none"
         />
 
-        <Link href="/dashboard">
-          <button className="mt-6 w-full rounded-lg bg-cyan-500 py-3 font-bold hover:bg-cyan-600">
-            Login
-          </button>
-        </Link>
+        {error && (
+          <p className="mt-4 text-center text-sm text-red-400">
+            {error}
+          </p>
+        )}
+
+        <button
+          onClick={handleLogin}
+          disabled={loading}
+          className="mt-6 w-full rounded-lg bg-cyan-500 py-3 font-bold transition hover:bg-cyan-600 disabled:opacity-50"
+        >
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
+        <p className="mt-6 text-center text-gray-400">
+          Don't have an account?{" "}
+          <Link
+            href="/signup"
+            className="text-cyan-400 hover:underline"
+          >
+            Sign Up
+          </Link>
+        </p>
 
       </div>
-
     </main>
   );
 }
