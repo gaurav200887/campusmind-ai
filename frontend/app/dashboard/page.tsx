@@ -1,6 +1,6 @@
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
-import DashboardCard from "@/components/layout/DashboardCard";
+import DashboardCard from "@/components/layout/Dashboardcard";
 
 import {
   Bot,
